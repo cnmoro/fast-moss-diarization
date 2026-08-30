@@ -1,0 +1,44 @@
+[workspace]
+resolver = "2"
+members = ["crates/fmd-core", "crates/fmd-py", "crates/fmd-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/cnmoro/fast-moss-diarization"
+rust-version = "1.82"
+
+[workspace.dependencies]
+candle-core = "0.11"
+candle-nn = "0.11"
+anyhow = "1"
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokenizers = "0.23"
+hf-hub = { version = "1", features = ["blocking", "rustls-tls"] }
+rayon = "1"
+symphonia = { version = "0.6", features = ["all"] }
+rubato = "0.16"
+realfft = "3"
+half = "2"
+tracing = "0.1"
+
+# A fast engine is useless if it is compiled slowly-in-the-wrong-places: the audio
+# frontend and the mel filterbank run on CPU and dominate short-clip latency, so
+# optimise dependencies even in dev builds.
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+# The Python extension module cannot use `panic = "abort"`: PyO3 converts Rust
+# panics into Python exceptions, which requires unwinding.
+[profile.release-py]
+inherits = "release"
+panic = "unwind"

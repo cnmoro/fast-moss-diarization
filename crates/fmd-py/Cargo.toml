@@ -1,0 +1,23 @@
+[package]
+name = "fmd-py"
+description = "Python bindings for the fast MOSS diarization engine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+name = "_fast_moss_diarization"
+crate-type = ["cdylib"]
+
+[dependencies]
+fmd-core = { path = "../fmd-core" }
+pyo3 = { version = "0.29", features = ["extension-module", "abi3-py311"] }
+
+[features]
+default = []
+cuda = ["fmd-core/cuda"]
+cudnn = ["fmd-core/cudnn"]
+metal = ["fmd-core/metal"]
+mkl = ["fmd-core/mkl"]

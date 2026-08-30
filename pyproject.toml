@@ -1,0 +1,36 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "fast-moss-diarization"
+description = "Fast GPU inference engine for MOSS-Transcribe-Diarize, written in Rust"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Carlo Moro", email = "cnmoro@gmail.com" }]
+keywords = ["asr", "diarization", "speech", "transcription", "rust", "cuda"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Sound/Audio :: Speech",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/cnmoro/fast-moss-diarization"
+Issues = "https://github.com/cnmoro/fast-moss-diarization/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "numpy>=1.26"]
+
+[tool.maturin]
+manifest-path = "crates/fmd-py/Cargo.toml"
+module-name = "fast_moss_diarization._fast_moss_diarization"
+python-source = "python"
+# The GPU build is the point of this package, so make CUDA the default. Build
+# without it using `maturin build --no-default-features`.
+features = ["fmd-py/cuda"]
+profile = "release-py"

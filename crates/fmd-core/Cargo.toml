@@ -1,0 +1,32 @@
+[package]
+name = "fmd-core"
+description = "Fast GPU inference engine for MOSS-Transcribe-Diarize"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+candle-core.workspace = true
+candle-nn.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokenizers.workspace = true
+hf-hub.workspace = true
+rayon.workspace = true
+symphonia.workspace = true
+rubato.workspace = true
+realfft.workspace = true
+half.workspace = true
+tracing.workspace = true
+
+[features]
+default = []
+cuda = ["candle-core/cuda", "candle-nn/cuda"]
+cudnn = ["cuda", "candle-core/cudnn"]
+metal = ["candle-core/metal", "candle-nn/metal"]
+mkl = ["candle-core/mkl", "candle-nn/mkl"]
+accelerate = ["candle-core/accelerate", "candle-nn/accelerate"]
